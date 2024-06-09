@@ -33,9 +33,7 @@ public class MainActivity extends AppCompatActivity {
         bt.setText("Add Todo");
         deleteAllButton = new Button(this);
         deleteAllButton.setText("Delete All Todos");
-        // DBロックボタンの作成
         lockButton = new Button(this);
-        lockButton.setText("Lock");
 
         listView = new ListView(this);
         dbHelper = new DBHelper(this);
@@ -47,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
         ll.addView(deleteAllButton);
         ll.addView(lockButton);
         ll.addView(listView);
+
+        updateLockButton();
 
         bt.setOnClickListener(v -> {
             // データベースがロックされているか否か確認
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         lockButton.setOnClickListener(v -> {
             boolean currentLockStatus = dbHelper.isLocked();
             dbHelper.setLocked(!currentLockStatus);
-            lockButton.setText(!dbHelper.isLocked() ? "Unlock" : "Lock");
+            updateLockButton();
             Toast.makeText(this, !currentLockStatus ? "Database Locked" : "Database Unlocked", Toast.LENGTH_SHORT).show();
         });
 
@@ -91,6 +91,12 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Database is locked!", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    // ロックボタンに表示する文字を更新するメソッド
+    private void updateLockButton() {
+        boolean isLocked = dbHelper.isLocked();
+        lockButton.setText(isLocked ? "UnLock":"Lock");
     }
 
     private boolean validateInput(EditText editText) {
