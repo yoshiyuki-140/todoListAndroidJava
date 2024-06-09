@@ -1,17 +1,16 @@
 package es.exsample;
 
-import android.content.Intent;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 
 import java.util.ArrayList;
 
@@ -46,8 +45,12 @@ public class MainActivity extends AppCompatActivity {
         ll.addView(listView);
 
         bt.setOnClickListener(v -> {
-            addTodo();
-            updateTodoList();
+            if (validateInput(et2)) {  // ToDoの入力を検証
+                addTodo();
+                updateTodoList();
+            } else {
+                Toast.makeText(this, "Please enter a Todo item.", Toast.LENGTH_SHORT).show();
+            }
         });
 
         listView.setOnItemClickListener((parent, view, position, id) -> {
@@ -57,12 +60,16 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private boolean validateInput(EditText editText) {
+        String inputText = editText.getText().toString().trim();
+        return !inputText.isEmpty();
+    }
+
     private void addTodo() {
-        String title = et1.getText().toString(); // タイトルは今回は使用しない
-        String todo = et2.getText().toString();
+        String todo = et2.getText().toString().trim();
         dbHelper.addTodo(todo);
-        et1.setText("");
-        et2.setText("");
+        et1.setText(""); // タイトル入力フィールドをクリア
+        et2.setText(""); // ToDo入力フィールドをクリア
     }
 
     private void updateTodoList() {
