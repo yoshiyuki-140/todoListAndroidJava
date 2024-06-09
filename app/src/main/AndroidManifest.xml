@@ -25,7 +25,7 @@
 
         <activity
             android:name=".MainActivity"
-            android:label="MainActivity"
+            android:label="Todoリストアプリ"
             android:exported="true">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
