@@ -4,10 +4,10 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2024-06-09T03:23:20.219649472Z">
+        <DropdownSelection timestamp="2024-06-09T03:59:46.865030004Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=/home/kuro/.android/avd/Pixel_6a_Edited_API_34.avd" />
+              <DeviceId pluginId="PhysicalDevice" identifier="serial=JJN6R18C03000255" />
             </handle>
           </Target>
         </DropdownSelection>
