@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">ExSample</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- 各Viewで使用する文字列の定義 -->
+    <string name="tv_viewsample">Viewのサンプルです。</string>
+    <string name="tv1">テキストビューです。</string>
+    <string name="cb_sample1">チェックボックス1</string>
+    <string name="rb_sample1">ラジオボタン1</string>
+    <string name="bt_sample1">検索</string>
+
+    <string-array name="lv_sample1">
+        <item>兼六園</item>
+        <item>21世紀美術館</item>
+        <item>近江町市場</item>
+    </string-array>
+
+    <string name="tv_title1">お勧めの観光地</string>
+    <string name="tv_title2">順位</string>
+    <string name="tv_kenroku">兼六園</string>
+    <string name="tv_21mu">21世紀美術館</string>
+    <string name="tv_ohumi">近江町市場</string>
+    <string name="tv_higa">東茶屋街</string>
+    <string name="tv_buke">武家屋敷</string>
+    <string name="tv_dot">・・・</string>
+
+    <string name="tv_sight">観光地を入力してください。</string>
+    <string name="bt_search">検索</string>
+    <string name="tv_result">検索結果：</string>
+
+</resources>
