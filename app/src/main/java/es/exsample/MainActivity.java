@@ -46,8 +46,8 @@ public class MainActivity extends AppCompatActivity {
 
         ll.addView(et);
         ll.addView(bt);
-        ll.addView(deleteAllButton);
         ll.addView(lockButton);
+        ll.addView(deleteAllButton);
         ll.addView(listView);
 
         updateLockButton();
