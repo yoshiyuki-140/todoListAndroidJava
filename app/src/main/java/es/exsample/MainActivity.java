@@ -31,9 +31,9 @@ public class MainActivity extends AppCompatActivity {
 
         et = new EditText(this);
         bt = new Button(this);
-        bt.setText("Add Todo");
+        bt.setText("Add Task");
         deleteAllButton = new Button(this);
-        deleteAllButton.setText("Delete All Todos");
+        deleteAllButton.setText("Delete All Tasks");
         lockButton = new Button(this);
         bt.setBackgroundColor(Color.parseColor("#7FBFFF")); // 明るい青
         deleteAllButton.setBackgroundColor(Color.parseColor("#FF0000")); // 明るい赤
