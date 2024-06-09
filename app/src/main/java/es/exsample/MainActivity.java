@@ -1,5 +1,6 @@
 package es.exsample;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -34,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
         deleteAllButton = new Button(this);
         deleteAllButton.setText("Delete All Todos");
         lockButton = new Button(this);
+        bt.setBackgroundColor(Color.parseColor("#7FBFFF")); // 明るい青
+        deleteAllButton.setBackgroundColor(Color.parseColor("#FF0000")); // 明るい赤
+        lockButton.setBackgroundColor(Color.parseColor("#FFFF00")); // 明るい黄色
 
         listView = new ListView(this);
         dbHelper = new DBHelper(this);
