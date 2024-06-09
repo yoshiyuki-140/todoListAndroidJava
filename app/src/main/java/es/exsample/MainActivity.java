@@ -1,6 +1,5 @@
 package es.exsample;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -16,7 +15,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     EditText et;
-    Button bt,deleteAllButton;
+    Button bt, deleteAllButton, lockButton;
     DBHelper dbHelper;
     ListView listView;
     ArrayAdapter<String> adapter;
@@ -34,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
         bt.setText("Add Todo");
         deleteAllButton = new Button(this);
         deleteAllButton.setText("Delete All Todos");
+        // DBロックボタンの作成
+        lockButton = new Button(this);
+        lockButton.setText("Lock");
 
         listView = new ListView(this);
         dbHelper = new DBHelper(this);
@@ -43,27 +45,51 @@ public class MainActivity extends AppCompatActivity {
         ll.addView(et);
         ll.addView(bt);
         ll.addView(deleteAllButton);
+        ll.addView(lockButton);
         ll.addView(listView);
 
         bt.setOnClickListener(v -> {
-            if (validateInput(et)) {  // ToDoの入力を検証
-                addTodo();
-                updateTodoList();
+            // データベースがロックされているか否か確認
+            if (!dbHelper.isLocked()) {
+                // バリデーション
+                if (validateInput(et)) {
+                    addTodo();
+                    updateTodoList();
+                } else {
+                    Toast.makeText(this, "Please enter a Todo item.", Toast.LENGTH_SHORT).show();
+                }
             } else {
-                Toast.makeText(this, "Please enter a Todo item.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Database is locked!", Toast.LENGTH_SHORT).show();
             }
         });
 
         deleteAllButton.setOnClickListener(v -> {
-            dbHelper.deleteAllTodos();
-            updateTodoList();
-            Toast.makeText(this, "All todos deleted.", Toast.LENGTH_SHORT).show();
+            // データベースがロックされているか否か確認
+            if (!dbHelper.isLocked()) {
+                dbHelper.deleteAllTodos();
+                updateTodoList();
+                Toast.makeText(this, "All todos deleted.", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Database is locked!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        lockButton.setOnClickListener(v -> {
+            boolean currentLockStatus = dbHelper.isLocked();
+            dbHelper.setLocked(!currentLockStatus);
+            lockButton.setText(!dbHelper.isLocked() ? "Unlock" : "Lock");
+            Toast.makeText(this, !currentLockStatus ? "Database Locked" : "Database Unlocked", Toast.LENGTH_SHORT).show();
         });
 
         listView.setOnItemClickListener((parent, view, position, id) -> {
-            String todo = adapter.getItem(position);
-            dbHelper.deleteTodo(todo);
-            updateTodoList();
+            // データベースがロックされているか否か確認
+            if (!dbHelper.isLocked()) {
+                String todo = adapter.getItem(position);
+                dbHelper.deleteTodo(todo);
+                updateTodoList();
+            } else {
+                Toast.makeText(this, "Database is locked!", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
@@ -75,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
     private void addTodo() {
         String todo = et.getText().toString().trim();
         dbHelper.addTodo(todo);
-        et.setText(""); // ToDo入力フィールドをクリア
+        et.setText("");
     }
 
     private void updateTodoList() {
