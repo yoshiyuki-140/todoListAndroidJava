@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     EditText et;
-    Button bt;
+    Button bt,deleteAllButton;
     DBHelper dbHelper;
     ListView listView;
     ArrayAdapter<String> adapter;
@@ -32,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
         et = new EditText(this);
         bt = new Button(this);
         bt.setText("Add Todo");
+        deleteAllButton = new Button(this);
+        deleteAllButton.setText("Delete All Todos");
 
         listView = new ListView(this);
         dbHelper = new DBHelper(this);
@@ -40,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
         ll.addView(et);
         ll.addView(bt);
+        ll.addView(deleteAllButton);
         ll.addView(listView);
 
         bt.setOnClickListener(v -> {
@@ -49,6 +52,12 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(this, "Please enter a Todo item.", Toast.LENGTH_SHORT).show();
             }
+        });
+
+        deleteAllButton.setOnClickListener(v -> {
+            dbHelper.deleteAllTodos();
+            updateTodoList();
+            Toast.makeText(this, "All todos deleted.", Toast.LENGTH_SHORT).show();
         });
 
         listView.setOnItemClickListener((parent, view, position, id) -> {

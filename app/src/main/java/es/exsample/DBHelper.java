@@ -61,4 +61,11 @@ public class DBHelper extends SQLiteOpenHelper {
         db.delete(TABLE_NAME, COLUMN_TODO + " = ?", new String[]{todo});
         db.close();
     }
+    public void deleteAllTodos() {
+        // すべてのTodoを消すボタン
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_NAME, null, null);
+        db.close();
+    }
+
 }
