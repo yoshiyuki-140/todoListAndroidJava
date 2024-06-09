@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    EditText et1, et2;
+    EditText et;
     Button bt;
     DBHelper dbHelper;
     ListView listView;
@@ -29,8 +29,7 @@ public class MainActivity extends AppCompatActivity {
         ll.setOrientation(LinearLayout.VERTICAL);
         setContentView(ll);
 
-        et1 = new EditText(this);
-        et2 = new EditText(this);
+        et = new EditText(this);
         bt = new Button(this);
         bt.setText("Add Todo");
 
@@ -39,13 +38,12 @@ public class MainActivity extends AppCompatActivity {
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, dbHelper.getAllTodos());
         listView.setAdapter(adapter);
 
-        ll.addView(et1);
-        ll.addView(et2);
+        ll.addView(et);
         ll.addView(bt);
         ll.addView(listView);
 
         bt.setOnClickListener(v -> {
-            if (validateInput(et2)) {  // ToDoの入力を検証
+            if (validateInput(et)) {  // ToDoの入力を検証
                 addTodo();
                 updateTodoList();
             } else {
@@ -66,10 +64,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addTodo() {
-        String todo = et2.getText().toString().trim();
+        String todo = et.getText().toString().trim();
         dbHelper.addTodo(todo);
-        et1.setText(""); // タイトル入力フィールドをクリア
-        et2.setText(""); // ToDo入力フィールドをクリア
+        et.setText(""); // ToDo入力フィールドをクリア
     }
 
     private void updateTodoList() {
