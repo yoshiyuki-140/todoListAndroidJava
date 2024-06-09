@@ -3,22 +3,29 @@ package es.exsample;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends AppCompatActivity{
+import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+
+public class MainActivity extends AppCompatActivity {
     EditText et1, et2;
     Button bt;
-    String title, todo;
-    int pos;
-    Intent it;
+    DBHelper dbHelper;
+    ListView listView;
+    ArrayAdapter<String> adapter;
 
-    public void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         LinearLayout ll = new LinearLayout(this);
         ll.setOrientation(LinearLayout.VERTICAL);
         setContentView(ll);
@@ -26,27 +33,42 @@ public class MainActivity extends AppCompatActivity{
         et1 = new EditText(this);
         et2 = new EditText(this);
         bt = new Button(this);
-        bt.setText("OK");
+        bt.setText("Add Todo");
 
-        it = getIntent();
-        title = it.getStringExtra("Title");
-        todo = it.getStringExtra("Todo");
-        pos = it.getIntExtra("Pos",0);
-        et1.setText(title);
-        et2.setText(todo);
+        listView = new ListView(this);
+        dbHelper = new DBHelper(this);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, dbHelper.getAllTodos());
+        listView.setAdapter(adapter);
 
         ll.addView(et1);
         ll.addView(et2);
         ll.addView(bt);
+        ll.addView(listView);
 
-        bt.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v) {
-                it.putExtra("Title",et1.getText().toString());
-                it.putExtra("Todo",et2.getText().toString());
-                it.putExtra("Pos",pos);
-                setResult(RESULT_OK,it);
-                finish();
-            }
+        bt.setOnClickListener(v -> {
+            addTodo();
+            updateTodoList();
         });
+
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            String todo = adapter.getItem(position);
+            dbHelper.deleteTodo(todo);
+            updateTodoList();
+        });
+    }
+
+    private void addTodo() {
+        String title = et1.getText().toString(); // タイトルは今回は使用しない
+        String todo = et2.getText().toString();
+        dbHelper.addTodo(todo);
+        et1.setText("");
+        et2.setText("");
+    }
+
+    private void updateTodoList() {
+        ArrayList<String> todos = dbHelper.getAllTodos();
+        adapter.clear();
+        adapter.addAll(todos);
+        adapter.notifyDataSetChanged();
     }
 }
